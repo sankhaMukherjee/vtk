@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 # --- First, run the program
-python3 vtk.py
+python3 vtk_1.py
 
 # --- Check to see if there was an error
 #  make sure we redirect of the error message
