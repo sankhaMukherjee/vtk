@@ -5,7 +5,6 @@ class MySphere():
     def __init__(self):
         
         self.sphere = vtk.vtkSphereSource()
-        #self.sphere.setResolution(100)
         self.sphere.SetThetaResolution(100)
         self.sphere.SetPhiResolution(100)
 
@@ -21,11 +20,15 @@ class MySphere():
         self.sphereActor.GetProperty().SetColor( color )
         return
 
+    def setResolution(self, resolution=100):
+        self.sphere.SetThetaResolution(resolution)
+        self.sphere.SetPhiResolution(resolution)
+        return
+
+    
+
 
 def createSphere():
-
-    sphere = MySphere()
-    sphere.setColor([1,0,0])
 
 
     ren = vtk.vtkRenderer()
@@ -34,14 +37,31 @@ def createSphere():
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    ren.AddActor(sphere.sphereActor)
+    allSpheres = []
+    for x in range(10):
+        for y in range(10):
+            for z in range(10):
+
+                sphere = MySphere()
+                sphere.sphere.SetCenter(x, y, z)
+                sphere.sphere.SetRadius(0.5)
+                sphere.setColor([1,0,0])
+                sphere.setResolution(10)
+
+                allSpheres.append(sphere)
+
+
+    for sphere in allSpheres:
+        ren.AddActor(sphere.sphereActor)
+
+
     renWin.SetSize(300, 300)
     renWin.SetWindowName('Cylinder')
 
     iren.Initialize()
 
     ren.ResetCamera()
-    ren.GetActiveCamera().Zoom(1.5)
+    # ren.GetActiveCamera().Zoom(1.5)
     renWin.Render()
 
     # Start the event loop.

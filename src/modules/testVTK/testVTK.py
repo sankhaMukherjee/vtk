@@ -22,6 +22,7 @@ def doSomething(logger):
     try:
         # examples.cylinderMapper()
         examples.createSphere()
+        
     except Exception as e:
         print(f'Problem with the test functionality: {e}')
 
