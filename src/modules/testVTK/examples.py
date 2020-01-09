@@ -1,5 +1,54 @@
 import vtk
 
+class MySphere():
+
+    def __init__(self):
+        
+        self.sphere = vtk.vtkSphereSource()
+        #self.sphere.setResolution(100)
+        self.sphere.SetThetaResolution(100)
+        self.sphere.SetPhiResolution(100)
+
+        self.sphereMapper = vtk.vtkPolyDataMapper()
+        self.sphereMapper.SetInputConnection( self.sphere.GetOutputPort() )
+
+        self.sphereActor = vtk.vtkActor()
+        self.sphereActor.SetMapper( self.sphereMapper )
+
+        return
+
+    def setColor(self, color):
+        self.sphereActor.GetProperty().SetColor( color )
+        return
+
+
+def createSphere():
+
+    sphere = MySphere()
+    sphere.setColor([1,0,0])
+
+
+    ren = vtk.vtkRenderer()
+    renWin = vtk.vtkRenderWindow()
+    renWin.AddRenderer(ren)
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(renWin)
+
+    ren.AddActor(sphere.sphereActor)
+    renWin.SetSize(300, 300)
+    renWin.SetWindowName('Cylinder')
+
+    iren.Initialize()
+
+    ren.ResetCamera()
+    ren.GetActiveCamera().Zoom(1.5)
+    renWin.Render()
+
+    # Start the event loop.
+    iren.Start()
+
+    return
+
 
 def cylinderMapper():
     colors = vtk.vtkNamedColors()
@@ -10,7 +59,7 @@ def cylinderMapper():
     # This creates a polygonal cylinder model with eight circumferential
     # facets.
     cylinder = vtk.vtkCylinderSource()
-    cylinder.SetResolution(8)
+    cylinder.SetResolution(100)
 
     # The mapper is responsible for pushing the geometry into the graphics
     # library. It may also do color mapping, if scalars or other
