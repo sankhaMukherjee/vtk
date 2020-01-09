@@ -2,9 +2,15 @@
     {
         "moduleName" : "module1",
         "path"       : "modules/module1/module1.py",
-        "execute"    : true,
+        "execute"    : false,
         "description": "a simple example module",
         "owner"      : ""
+    },{
+        "moduleName": "testVTK",
+        "path": "modules/testVTK/testVTK.py",
+        "execute": true,
+        "description": "a simple example module",
+        "owner": ""
     }, {
         "moduleName" : "versionedModule",
         "path"       : "modules/versionedModule/versionedModule.py",
