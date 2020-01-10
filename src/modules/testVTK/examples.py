@@ -86,7 +86,8 @@ class MyVoxel():
         self.actor.GetProperty().SetColor(vtk.vtkNamedColors().GetColor3d("Tomato"))
         self.actor.GetProperty().EdgeVisibilityOn()
         self.actor.GetProperty().SetLineWidth(3)
-        self.actor.GetProperty().SetOpacity(.5)
+        self.actor.GetProperty().SetOpacity(.1)
+
         return
         
 
@@ -104,7 +105,7 @@ def createSphere():
     allVoxels = []
     for x in range(10):
         for y in range(10):
-            for z in range(10):
+            for z in range(3):
 
                 sphere = MySphere()
                 sphere.sphere.SetCenter(x, y, z)
@@ -114,12 +115,16 @@ def createSphere():
 
                 allSpheres.append(sphere)
 
+                voxel = MyVoxel()
+                voxel.actor.SetPosition( x-0.5, y-0.5, z-0.5 )
+                allVoxels.append( voxel )
+
     for sphere in allSpheres:
         ren.AddActor(sphere.sphereActor)
         
 
-    voxel = MyVoxel()
-    allVoxels.append( voxel )
+    
+
     for voxel in allVoxels:
         ren.AddViewProp( voxel.actor )
 
