@@ -1,4 +1,52 @@
 import vtk
+from lib.simpleFunctions import simpleObjects as sO
+
+def createSphere():
+
+
+    ren = vtk.vtkRenderer()
+    renWin = vtk.vtkRenderWindow()
+    renWin.AddRenderer(ren)
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(renWin)
+
+    allSpheres = []
+    allVoxels = []
+    for x in range(10):
+        for y in range(10):
+            for z in range(3):
+
+                sphere = sO.Sphere()
+                sphere.source.SetCenter(x, y, z)
+                sphere.source.SetRadius(0.1)
+                sphere.setColor([1,0,0])
+                sphere.setResolution(10)
+
+                allSpheres.append(sphere)
+
+                voxel = sO.Voxel()
+                voxel.actor.SetPosition( x-0.5, y-0.5, z-0.5 )
+                allVoxels.append( voxel )
+
+    for sphere in allSpheres:
+        ren.AddActor(sphere.actor)
+        
+    for voxel in allVoxels:
+        ren.AddViewProp( voxel.actor )
+
+    renWin.SetSize(1500, 1500)
+    renWin.SetWindowName('Cylinder')
+
+    iren.Initialize()
+
+    ren.ResetCamera()
+    # ren.GetActiveCamera().Zoom(1.5)
+    renWin.Render()
+
+    # Start the event loop.
+    iren.Start()
+
+    return
 
 
 def cylinderMapper():
@@ -10,7 +58,7 @@ def cylinderMapper():
     # This creates a polygonal cylinder model with eight circumferential
     # facets.
     cylinder = vtk.vtkCylinderSource()
-    cylinder.SetResolution(8)
+    cylinder.SetResolution(100)
 
     # The mapper is responsible for pushing the geometry into the graphics
     # library. It may also do color mapping, if scalars or other
