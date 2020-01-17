@@ -3,7 +3,6 @@ from lib.simpleFunctions import simpleObjects as sO
 
 def createSphere():
 
-
     ren = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
@@ -28,9 +27,13 @@ def createSphere():
                 voxel.actor.SetPosition( x-0.5, y-0.5, z-0.5 )
                 allVoxels.append( voxel )
 
+    myText = sO.Text('Some Text')
+    myText.actor.SetScale( 0.1, 0.1, 0.1 )
+    ren.AddActor( myText.actor )
+    
     for sphere in allSpheres:
         ren.AddActor(sphere.actor)
-        
+
     for voxel in allVoxels:
         ren.AddViewProp( voxel.actor )
 
@@ -47,7 +50,6 @@ def createSphere():
     iren.Start()
 
     return
-
 
 def cylinderMapper():
     colors = vtk.vtkNamedColors()
@@ -103,3 +105,5 @@ def cylinderMapper():
 
     # Start the event loop.
     iren.Start()
+
+    

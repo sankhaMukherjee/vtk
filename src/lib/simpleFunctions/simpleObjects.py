@@ -31,6 +31,58 @@ class Sphere():
         self.source.SetPhiResolution(resolution)
         return
 
+class Cone():
+
+    def __init__(self):
+        
+        self.source = vtk.vtkConeCone()
+        self.source.SetResolution(100)
+
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputConnection( self.source.GetOutputPort() )
+
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper( self.mapper )
+
+        return
+
+    def setColor(self, color):
+        self.actor.GetProperty().SetColor( color )
+        return
+
+    def setResolution(self, resolution=100):
+        self.source.SetResolution(resolution)
+        return
+
+class Cylinder():
+
+    def __init__(self):
+        
+        self.source = vtk.vtkCylinderSource()
+        self.source.SetResolution(100)
+
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputConnection( self.source.GetOutputPort() )
+
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper( self.mapper )
+
+        return
+
+    def setColor(self, color):
+        self.actor.GetProperty().SetColor( color )
+        return
+
+    def setResolution(self, resolution=100):
+        self.source.SetResolution(resolution)
+        return
+
+    def setSize(self, size):
+        self.source.SetHeight(size)
+        self.source.SetRadius(size/2)
+
+        return
+
 class Cube():
 
     def __init__(self):
@@ -44,8 +96,8 @@ class Cube():
         self.mapper = vtk.vtkPolyDataMapper()
         self.mapper.SetInputConnection( self.source.GetOutputPort() )
 
-        self.cubeActor = vtk.vtkActor()
-        self.cubeActor.SetMapper( self.mapper )
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper( self.mapper )
 
         return
 
@@ -55,6 +107,10 @@ class Cube():
         self.source.SetYLength(size)
         self.source.SetZLength(size)
 
+        return
+
+    def setColor(self, color):
+        self.actor.GetProperty().SetColor( color )
         return
 
 class Voxel():
@@ -93,4 +149,24 @@ class Voxel():
         self.actor.GetProperty().SetLineWidth(3)
         self.actor.GetProperty().SetOpacity(.1)
 
+        return
+
+class Text():
+
+    def __init__(self, text='None'):
+
+        self.source = vtk.vtkVectorText()
+        self.source.SetText(text)
+        self.source.Update()
+
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputConnection( self.source.GetOutputPort() )
+
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper( self.mapper )
+
+        return 
+
+    def setColor(self, color):
+        self.actor.GetProperty().SetColor( color )
         return
