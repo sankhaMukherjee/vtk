@@ -5,6 +5,42 @@ import vtk
 config = jsonref.load(open('../config/config.json'))
 logBase = config['logging']['logBase'] + '.lib.simpleFunctions.simpleObjects'
 
+class Line():
+
+    def __init__(self, p1, p2):
+        
+        self.linesPolyData = vtk.vtkPolyData()
+
+        self.pts = vtk.vtkPoints()
+        self.pts.InsertNextPoint(*p1)
+        self.pts.InsertNextPoint(*p2)
+
+        self.linesPolyData.SetPoints(self.pts)
+
+        self.line0 = vtk.vtkLine()
+        self.line0.GetPointIds().SetId(0, 0)
+        self.line0.GetPointIds().SetId(1, 1)
+
+        self.lines = vtk.vtkCellArray()
+        self.lines.InsertNextCell(self.line0)
+
+        self.linesPolyData.SetLines(self.lines)
+
+        self.namedColors = vtk.vtkNamedColors()
+        self.colors = vtk.vtkUnsignedCharArray()
+        self.colors.SetNumberOfComponents(3)
+        # self.colors.InsertNextTypedTuple(self.namedColors.GetColor3ub("Tomato"))
+        self.colors.InsertNextTypedTuple((0,0,0))
+        self.linesPolyData.GetCellData().SetScalars(self.colors)
+        
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputData( self.linesPolyData )
+
+        self.actor = vtk.vtkActor()
+        self.actor.GetProperty().SetLineWidth(2)
+        self.actor.SetMapper( self.mapper )
+        
+        return
 
 class Sphere():
 
