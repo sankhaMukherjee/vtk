@@ -116,7 +116,7 @@ def colorMapper(forMap):
 
     uniques = list(set(forMap))
     N       = len(uniques)-1
-    mapper  = { m:plt.cm.viridis(i/N) for i, m in enumerate(uniques)}
+    mapper  = { m:plt.cm.Set1(i/N) for i, m in enumerate(uniques)}
 
     result = [ mapper[f][:3] for f in forMap ]
 
@@ -163,7 +163,7 @@ def listToBin(forBin, type='sphere', posDelta=0.2, vPosDelta=0.5, startPos=0, st
     return objects
 
 
-def plotBasics():
+def plot2D():
 
     bgColor = [217/255, 211/255, 232/255]
     # bgColor = [219/255, 225/255, 235/255]
