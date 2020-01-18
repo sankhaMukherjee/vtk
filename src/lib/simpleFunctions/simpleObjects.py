@@ -1,9 +1,86 @@
 from logs import logDecorator as lD
 import jsonref
 import vtk
+import numpy as np
 
 config = jsonref.load(open('../config/config.json'))
 logBase = config['logging']['logBase'] + '.lib.simpleFunctions.simpleObjects'
+
+class MeshXZ():
+
+    def __init__(self, startX, startZ, endX, endZ, yValue=0, nPoints=20):
+
+        self.xCoords = vtk.vtkFloatArray()
+        self.yCoords = vtk.vtkFloatArray()
+        self.zCoords = vtk.vtkFloatArray()
+
+        for x in np.linspace(startX, endX, nPoints):
+            self.xCoords.InsertNextValue(x)
+
+        self.yCoords.InsertNextValue(yValue)
+
+        for z in np.linspace(startZ, endZ, nPoints):
+            self.zCoords.InsertNextValue(z)
+
+        self.rgrid = vtk.vtkRectilinearGrid()
+        self.rgrid.SetDimensions(nPoints, 1, nPoints)
+        self.rgrid.SetXCoordinates(self.xCoords)
+        self.rgrid.SetYCoordinates(self.yCoords)
+        self.rgrid.SetZCoordinates(self.zCoords)
+
+        self.plane = vtk.vtkRectilinearGridGeometryFilter()
+        self.plane.SetInputData(self.rgrid)
+        self.plane.SetExtent(0, nPoints-1, 0, 0, 0, nPoints-1)
+
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputConnection(self.plane.GetOutputPort())
+
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper(self.mapper)
+        self.actor.GetProperty().SetRepresentationToWireframe()
+        self.actor.GetProperty().SetColor((0,0,0))
+        self.actor.GetProperty().EdgeVisibilityOn()
+
+        return
+
+
+class MeshXY():
+
+    def __init__(self, startX, startY, endX, endY, zValue=0, nPoints=20):
+
+        self.xCoords = vtk.vtkFloatArray()
+        self.yCoords = vtk.vtkFloatArray()
+        self.zCoords = vtk.vtkFloatArray()
+
+        for x in np.linspace(startX, endX, nPoints):
+            self.xCoords.InsertNextValue(x)
+
+        for y in np.linspace(startY, endY, nPoints):
+            self.yCoords.InsertNextValue(y)
+
+        for z in [zValue]:
+            self.zCoords.InsertNextValue(z)
+
+        self.rgrid = vtk.vtkRectilinearGrid()
+        self.rgrid.SetDimensions(nPoints, nPoints, 1)
+        self.rgrid.SetXCoordinates(self.xCoords)
+        self.rgrid.SetYCoordinates(self.yCoords)
+        self.rgrid.SetZCoordinates(self.zCoords)
+
+        self.plane = vtk.vtkRectilinearGridGeometryFilter()
+        self.plane.SetInputData(self.rgrid)
+        self.plane.SetExtent(0, nPoints-1, 0, nPoints-1, 0, 0)
+
+        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper.SetInputConnection(self.plane.GetOutputPort())
+
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper(self.mapper)
+        self.actor.GetProperty().SetRepresentationToWireframe()
+        self.actor.GetProperty().SetColor((0,0,0))
+        self.actor.GetProperty().EdgeVisibilityOn()
+
+        return
 
 class Line():
 

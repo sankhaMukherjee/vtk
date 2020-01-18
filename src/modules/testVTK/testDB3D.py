@@ -108,6 +108,16 @@ def get2DObjects(colors2D, sizes2D, xPos, xText='x', yPosDelta=0.5, zPosDelta=0.
 
             allObj.append( obj )
 
+    xLabel = sO.Text(f'{xText}')
+    xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+    xLabel.actor.SetPosition( xPos-0.2, -1, 0 )
+    xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+    allObj.append( xLabel )
+
+    ax1 = sO.Line((xPos,-0.4,0),(xPos,-0.6,0))
+    allObj.append( ax1 )
+
+
     return allObj
 
 def plot3D():
@@ -131,6 +141,7 @@ def plot3D():
     iren.SetRenderWindow(renWin)
 
     for obj in get1Dobjects(sexColors, 2, 'sex'):
+        obj.actor.GetProperty().SetOpacity(0.5)
         ren.AddActor( obj.actor )
 
     for obj in get1Dobjects(raceColors, 3, 'race'):
@@ -139,6 +150,13 @@ def plot3D():
     for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi'):
         ren.AddActor( obj.actor )
     
+
+    day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
+    ren.AddActor( day4.actor )
+
+    user4 = sO.MeshXZ(0, 0, 4, -5, 2, 60)
+    ren.AddActor( user4.actor )
+
 
     renWin.SetSize(1200, 1200)
     renWin.SetWindowName('Cylinder')

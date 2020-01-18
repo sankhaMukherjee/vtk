@@ -162,7 +162,6 @@ def listToBin(forBin, type='sphere', posDelta=0.2, vPosDelta=0.5, startPos=0, st
 
     return objects
 
-
 def plot2D():
 
     bgColor = [217/255, 211/255, 232/255]
