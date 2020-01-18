@@ -133,11 +133,17 @@ def listToBin(forBin, type='sphere', posDelta=0.2, vPosDelta=0.5, startPos=0, st
     for i, d in enumerate(distinct):
         myText = sO.Text(f'{startStr}[{d}]')
         myText.actor.SetScale( 0.1, 0.1, 0.1 )
-        myText.actor.SetPosition( startPos + i*vPosDelta, -0.5, 0 )
+        myText.actor.SetPosition( startPos + i*posDelta, -1, 0 )
         myText.actor.GetProperty().SetColor( 0, 0, 0 )
         myText.actor.RotateZ(-90)
 
         objects.append(myText)
+
+        vLine = sO.Line((startPos + i*posDelta, -.4, 0), (startPos + i*posDelta, -.6, 0))
+        objects.append(vLine)
+
+    vLine = sO.Line((startPos, -.5, 0), (startPos + (NDist-1)*posDelta, -.5, 0))
+    objects.append(vLine)
 
     for i, k in enumerate(forBin):
         s = sO.Sphere()
@@ -162,8 +168,9 @@ def plotBasics():
     bgColor = [217/255, 211/255, 232/255]
     # bgColor = [219/255, 225/255, 235/255]
     
+    Npatients = 10
     
-    data = getData()
+    data = getData()[:Npatients+1]
     header = data[0]
     data = data[1:]
     site, patient, sex, race = zip(*data)
@@ -177,30 +184,53 @@ def plotBasics():
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    Npatients = 10
 
     sexColors = colorMapper( sex )
     raceColors = colorMapper( race )
     siteColors = colorMapper( site )
 
-    for m in listToBin(sex[:Npatients], posDelta=0.4, startPos=4, startStr='sex'):
+    for m in listToBin(sex, posDelta=0.4, startPos=4, startStr='sex'):
+        ren.AddActor( m.actor )
+
+    for m in listToBin(race, posDelta=0.4, startPos=5, startStr='race'):
         ren.AddActor( m.actor )
     
+    # Render the x-axes
+    ax1 = sO.Line((1,-0.5,0),(3,-0.5,0))
+    ren.AddActor( ax1.actor )
+    for i in range(3):
+        ax1 = sO.Line((i+1,-0.4,0),(i+1,-0.6,0))
+        ren.AddActor( ax1.actor )
+
+    # Render the y-axes
+    ax1 = sO.Line((0,0,0),(0,(Npatients-1)*0.5,0))
+    ren.AddActor( ax1.actor )
+    for i in range(Npatients):
+        ax1 = sO.Line((-0.1,i*0.5,0),(0.1,i*0.5,0))
+        ren.AddActor( ax1.actor )
+
+
     for patient in range(Npatients):
 
         # Set the names for the patients
         myText = sO.Text(f'p_{patient:04d}')
         myText.actor.SetScale( 0.1, 0.1, 0.1 )
-        myText.actor.SetPosition( 0, patient*0.5, 0 )
+        myText.actor.SetPosition( -1, patient*0.5, 0 )
         myText.actor.GetProperty().SetColor( 0, 0, 0 )
         ren.AddActor( myText.actor )
+        
+        # set the cohort values
+        cohort = sO.Sphere()
+        cohort.actor.SetScale( 0.3 )
+        cohort.actor.SetPosition(1, patient*0.5, 0)
+        cohort.setColor( (0, 1, 0)  )
+        ren.AddActor( cohort.actor )
 
         # set the sex values
-        sex = sO.Sphere()
+        sex = sO.Cube()
         sex.source.SetCenter(2, patient*0.5, 0)
-        sex.source.SetRadius(0.1)
+        sex.setSize(0.3)
         sex.setColor( sexColors[patient]  )
-        sex.setResolution(30)
         ren.AddActor( sex.actor )
 
         # set the race values
@@ -210,21 +240,12 @@ def plotBasics():
         race.setColor( raceColors[patient]  )
         ren.AddActor( race.actor )
 
-        # set the site values
-        site = sO.Cylinder()
-        site.source.SetCenter(1, patient*0.5, 0)
-        site.setSize( 0.3 )
-        site.setColor( siteColors[patient]  )
-        ren.AddActor( site.actor )
 
-
-
-
-    # Set the names for the patients
-    for pos, dataType in enumerate(['site', 'sex ', 'race']):
+    # Set the names for the axes
+    for pos, dataType in enumerate(['cohort', 'sex ', 'race']):
         myText = sO.Text(f'{dataType}')
         myText.actor.SetScale( 0.1, 0.1, 0.1 )
-        myText.actor.SetPosition( pos+1, -1, 0 )
+        myText.actor.SetPosition( pos+0.8, -1, 0 )
         myText.actor.GetProperty().SetColor( 0, 0, 0 )
         ren.AddActor( myText.actor )
 
