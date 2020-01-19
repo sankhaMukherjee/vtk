@@ -1,8 +1,97 @@
-import vtk
-import numpy as np
+import vtk, os
+import numpy as np, json
 from lib.simpleFunctions import simpleObjects as sO
 import matplotlib.pyplot as plt
 
+from datetime import datetime as dt
+
+ren = vtk.vtkRenderer()
+renWin = vtk.vtkRenderWindow()
+
+
+def restoreCammeraSpecs(fileName):
+
+    try:
+        camera = ren.GetActiveCamera()
+        data = json.load(open(fileName))
+        camera.SetFocalPoint(data['focalPoint'])
+        camera.SetPosition(data['position'])
+        camera.SetViewUp(data['viewUp'])
+        camera.SetViewAngle(data['viewAngle'])
+        camera.SetClippingRange(data['clippingRange'])
+    except Exception as e:
+        print(f'Unable to restore the session from [{fileName}]: {e}')
+
+    return
+
+def saveCameraSpecs():
+
+    camera = ren.GetActiveCamera()
+    folder = '../results/cameraPos'
+    os.makedirs(folder, exist_ok=True)
+    fileName = dt.now().strftime('2D_%Y-%m-%d--%H-%M-%S.json')
+    fileName = os.path.join( folder, fileName )
+
+    focalPoint    = [n for n in camera.GetFocalPoint()]
+    position      = [n for n in camera.GetPosition()]
+    viewUp        = [n for n in camera.GetViewUp()]
+    viewAngle     = camera.GetViewAngle()
+    clippingRange = [n for n in camera.GetClippingRange()]
+
+    data = {
+        'focalPoint'    : focalPoint,      
+        'position'      : position,    
+        'viewUp'        : viewUp,  
+        'viewAngle'     : viewAngle,     
+        'clippingRange' : clippingRange,         
+    }
+
+    with open(fileName, 'w') as f:
+        f.write( json.dumps(data) )
+
+    with open(os.path.join(folder, 'latest2D.json'), 'w') as f:
+        f.write( json.dumps(data) )
+
+
+    print(f'+------------------------------------------')
+    print(f'| focalPoint     = {focalPoint}')
+    print(f'| position       = {position}')
+    print(f'| viewUp         = {viewUp}')
+    print(f'| viewAngle      = {viewAngle}')
+    print(f'| clippingRange  = {clippingRange}')
+    print(f'+------------------------------------------')
+
+    return
+
+def screenShot():
+
+    folder = '../results/screenShots'
+    os.makedirs(folder, exist_ok=True)
+    fileName = dt.now().strftime('%Y-%m-%d--%H-%M-%S.png')
+    fileName = os.path.join( folder, fileName )
+
+    # screenshot code:
+    w2if = vtk.vtkWindowToImageFilter()
+    w2if.SetInput(renWin)
+    w2if.SetInputBufferTypeToRGB()
+    w2if.ReadFrontBufferOff()
+    w2if.Update()
+
+    writer = vtk.vtkPNGWriter()
+    writer.SetFileName(fileName)
+    writer.SetInputConnection(w2if.GetOutputPort())
+    writer.Write()
+
+    return fileName
+
+def Keypress(obj, event):
+    key = obj.GetKeySym()
+    if (key == 's') or (key == 'S'):
+        fileName = screenShot()
+        print(f'Screenshot saved at [{fileName}]')
+
+    if (key == 'c') or (key == 'C'):
+        saveCameraSpecs()
 
 def getData():
 
@@ -114,9 +203,9 @@ def getData():
     
 def colorMapper(forMap):
 
-    uniques = list(set(forMap))
+    uniques = sorted(list(set(forMap)))
     N       = len(uniques)-1
-    mapper  = { m:plt.cm.Set1(i/N) for i, m in enumerate(uniques)}
+    mapper  = { m:plt.cm.tab20(i/N) for i, m in enumerate(uniques)}
 
     result = [ mapper[f][:3] for f in forMap ]
 
@@ -176,9 +265,8 @@ def plot2D():
     
     N = len(site)
 
-    ren = vtk.vtkRenderer()
+    
     ren.SetBackground(bgColor)
-    renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(ren)
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
@@ -248,13 +336,14 @@ def plot2D():
         myText.actor.GetProperty().SetColor( 0, 0, 0 )
         ren.AddActor( myText.actor )
 
-    renWin.SetSize(1500, 1500)
+    renWin.SetSize(900, 900)
     renWin.SetWindowName('Cylinder')
 
+    iren.AddObserver("KeyPressEvent", Keypress)
     iren.Initialize()
 
     ren.ResetCamera()
-    # ren.GetActiveCamera().Zoom(1.5)
+    restoreCammeraSpecs('../results/cameraPos/latest2D.json')
     renWin.Render()
 
     # Start the event loop.
