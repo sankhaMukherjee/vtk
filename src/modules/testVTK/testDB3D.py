@@ -36,7 +36,7 @@ def saveCameraSpecs():
     camera = ren.GetActiveCamera()
     folder = '../results/cameraPos'
     os.makedirs(folder, exist_ok=True)
-    fileName = dt.now().strftime('%Y-%m-%d--%H-%M-%S.json')
+    fileName = dt.now().strftime('3D_%Y-%m-%d--%H-%M-%S.json')
     fileName = os.path.join( folder, fileName )
 
     focalPoint    = [n for n in camera.GetFocalPoint()]
@@ -248,7 +248,6 @@ def plot3D():
     siteColors = colorMapper( site )
     cgiColors  = colorMapper3D_smooth( cgi )
     cgiSizes   = sizeMapper3D_smooth( cgi )
-
     
     ren.SetBackground(bgColor)
     
@@ -266,7 +265,6 @@ def plot3D():
     for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=4):
         ren.AddActor( obj.actor )
     
-
     # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
     # ren.AddActor( day4.actor )
 
@@ -282,7 +280,7 @@ def plot3D():
     iren.Initialize()
 
     ren.ResetCamera()
-    restoreCammeraSpecs('../results/cameraPos/latest.json')
+    restoreCammeraSpecs('../results/cameraPos/latest3D.json')
     renWin.Render()
 
     iren.Start()

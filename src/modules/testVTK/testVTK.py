@@ -22,8 +22,8 @@ def doSomething(logger):
     try:
         # examples.cylinderMapper()
         # examples.createSphere()
-        # testDB2D.plot2D()
-        testDB3D.plot3D()
+        testDB2D.plot2D()
+        # testDB3D.plot3D()
         
         
     except Exception as e:
