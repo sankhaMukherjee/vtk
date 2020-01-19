@@ -119,24 +119,24 @@ def getData():
     nPatients = len(data)
     nDaysList = [206, 589, 278, 348, 274, 32, 317, 73, 184, 641, 468]
 
-    allCGI = [
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],
-            [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2],
+    diagn = [
+        [['Anxiety',],['Anxiety',],['Anxiety','MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['Bipolar',],['Bipolar',]],
+        [['Alcohol',],['Alcohol',],['Alcohol',],['Bipolar','Alcohol',],['Bipolar','Alcohol',],['Bipolar',],['Bipolar',],['Bipolar',],['Bipolar',],['Bipolar',]],
+        [['Alcohol',],['Alcohol',],['Alcohol','MDD',],['Alcohol','MDD',],['Alcohol','MDD',],['Alcohol','MDD',],['Alcohol','MDD',],['MDD',],['MDD',],['Schizo',]],
+        [['Alcohol',],['Alcohol',],['Alcohol',],['Alcohol','MDD',],['Alcohol','MDD',],['Alcohol','MDD',],['MDD',],['MDD',],['MDD',],['MDD',]],
+        [['MDD',],['MDD',],['MDD',],['Alcohol','MDD',],['Alcohol',],['Alcohol',],['Bipolar','Alcohol',],['Bipolar','Alcohol',],['Bipolar',],['Bipolar',]],
+        [['Alcohol',],['Alcohol',],['Alcohol','MDD',],['Alcohol','MDD',],['MDD',],['MDD',],['Bipolar',],['Bipolar',],['Bipolar',],['Bipolar',]],
+        [['Schizo',],['Schizo',],['Schizo',],['Schizo',],['Schizo','MDD',],['Schizo','MDD',],['Schizo','MDD',],['Schizo','MDD',],['Schizo','MDD',],['Schizo',]],
+        [['Schizo',],['Schizo',],['Schizo',],['Schizo',],['Schizo',],['Schizo',],['Schizo','MDD',],['Schizo','MDD',],['MDD',],['MDD',]],
+        [['MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['Alcohol','MDD',],['Alcohol','MDD',],['Alcohol',],['Alcohol',],['Alcohol',]],
+        [['Schizo',],['Schizo','MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['Schizo','MDD',],['Schizo',],['Schizo',]],
+        [['Schizo',],['Schizo',],['Schizo',],['Schizo','MDD',],['Schizo','MDD',],['MDD',],['MDD',],['MDD',],['MDD',],['Schizo',]],
     ]
 
     for p in range(nPatients):
         nDays = nDaysList[p]
-        # cgi = allCGI[p]
         data[p].append( np.random.randint(1,7,nDays) )
+        data[p].append(diagn[p])
 
     return data
 
@@ -301,14 +301,99 @@ def getPatients(nPatients, xPos, yPosDelta):
 
     return allObj
 
+def getDiagnObjs(diagn, xPos, xText='x', yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=None):
+
+    uniques = set([])
+    for ds in diagn:
+        for d in ds:
+            uniques.update(d)
+
+    uniques = sorted(list(uniques))
+    nUniq   = len(uniques)
+    colors  = { m:plt.cm.tab20b(i/nUniq)[:-1] for i, m in enumerate(uniques) }
+    poss    = { m:i for i, m in enumerate(uniques) }
+    
+    
+    allObj = []
+    for i, patient in enumerate(diagn):
+        for j, day in enumerate(patient):
+            for k, disease in enumerate(uniques):
+                if disease in day:
+
+                    c = colors[disease]
+                    if (highlight is not None) and (highlight != i):
+                        c = cl.rgb_to_hsv(c)
+                        c[1] = 0
+                        c = cl.hsv_to_rgb(c)
+                        
+                    obj = sO.Cube()
+                    obj.source.SetCenter(xPos -k*size/(nUniq) , i*yPosDelta, -j*zPosDelta)
+                    obj.setSize( size/(nUniq + 1)  )
+                    obj.setColor( c )
+
+                    if (highlight is not None) and (highlight != i):
+                        obj.actor.GetProperty().SetOpacity(0.1)
+                    allObj.append( obj )
+
+    for i, u in enumerate(uniques):
+
+        xTick = sO.Line((xPos -i*size/(nUniq), -0.4, 0), (xPos -i*size/(nUniq), -0.6, 0))
+        allObj.append(xTick)
+
+        xLabel = sO.Text(f'[{xText}]-{u}')
+        xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+        xLabel.actor.SetPosition( xPos -i*size/(nUniq), -1, 0 )
+        xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+        xLabel.actor.RotateZ(-90)
+        allObj.append( xLabel )
+
+    xLabel = sO.Text(f'{xText}')
+    xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+    xLabel.actor.SetPosition( xPos -0.6, -0.8, 0 )
+    xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+    allObj.append( xLabel )
+
+    ax = sO.Line((xPos, -0.5, 0), (xPos -(nUniq-1)*size/(nUniq), -0.5, 0))
+    allObj.append(ax)
+
+    return allObj
+
+def getDiagnFilterObj(diagn, xPos, toFilter='Alcohol', xText='x', yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=None):
+
+    allObj = []
+    for i, patient in enumerate(diagn):
+        for j, day in enumerate(patient):
+            if toFilter in day:
+
+                c = np.array([0,1,0])
+                if (highlight is not None) and (highlight != i):
+                    c = cl.rgb_to_hsv(c)
+                    c[1] = 0
+                    c = cl.hsv_to_rgb(c)
+
+                s = sO.Sphere()
+                s.setColor(c)
+                s.setResolution(40)
+                s.actor.SetPosition( xPos, i*yPosDelta, -j*zPosDelta )
+                s.actor.SetScale(size/2)
+
+                if (highlight is not None) and (highlight != i):
+                    s.actor.GetProperty().SetOpacity(0.1)
+
+                allObj.append( s )
+
+    return allObj
+
+
 def plot3D(config):
 
     bgColor = [217/255, 211/255, 232/255]
 
     data = getData()
-    site, patient, sex, race, cgi = zip(*data)
-    meanCGI = [np.mean(m[:10]) for m in cgi]
-    
+    site, patient, sex, race, cgi, diagn = zip(*data)
+    meanCGI_1 = [np.mean(m[2:4]) for m in cgi]
+    meanCGI_2 = [np.mean(m[8:10]) for m in cgi]
+
     sexColors  = colorMapper( sex )
     raceColors = colorMapper( race )
     siteColors = colorMapper( site )
@@ -321,26 +406,52 @@ def plot3D(config):
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    for obj in get1DobjectsSmooth( meanCGI, xPos=0, xText='meanCGI', vMax = 7, vMin=1, highlight=None ):
+
+    for obj in getPatients(11, 0, 0.5):
         ren.AddActor( obj.actor )
 
-    for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=4):
-        ren.AddActor( obj.actor )
+    if config['cgi']:
+        for obj in get2DObjects(cgiColors, cgiSizes, -1, 'cgi', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    for obj in get1Dobjects(raceColors, 3, 'race', highlight=4):
-        ren.AddActor( obj.actor )
+    if config['diagn']:
+        for obj in getDiagnObjs(diagn, -2, xText='diagn', size=1, highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    for obj in get1Dobjects(sexColors, 2, 'sex', highlight=4):
-        ren.AddActor( obj.actor )
-    
-    for obj in getPatients(11, 4, 0.5):
-        ren.AddActor( obj.actor )
+    if config['cond']:
+        for obj in getDiagnFilterObj(diagn, -3.5, xText='cond', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
-    # ren.AddActor( day4.actor )
+    if config['CGI-others']:
+        for obj in get1DobjectsSmooth( meanCGI_1, xPos=-4.5, xText='CGI[before]', vMax = 7, vMin=1, highlight=config['highlight'] ):
+            ren.AddActor( obj.actor )
 
-    user4 = sO.MeshXZ(-0.3, 0, 3.3, -5, 2, 20)
-    ren.AddActor( user4.actor )
+        for obj in get1DobjectsSmooth( meanCGI_2, xPos=-5.5, xText='CGI[after]', vMax = 7, vMin=1, highlight=config['highlight'] ):
+            ren.AddActor( obj.actor )
+
+    if config['highlight'] is not None:
+        user4 = sO.MeshXZ(-5.7, 0, -0.3, -5, 2, 20)
+        ren.AddActor( user4.actor )
+
+    if (config['highlight'] is not None) and config['mesh']:
+        #This is the smaller green mesh ...
+        user4 = sO.MeshXZ(-3.5, -1.5, -1, -3.5, 2, 60)
+        user4.actor.GetProperty().SetColor((0,1,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
+
+    if (config['highlight'] is not None) and  config['mesh-red']:
+        #This is the smaller mesh ...
+        user4 = sO.MeshXZ(-3.5, -1.0, -1, -1.5, 2, 60)
+        user4.actor.GetProperty().SetColor((1,0,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
+
+        #This is the other smaller mesh ...
+        user4 = sO.MeshXZ(-3.5, -2.5, -1, -3, 2, 60)
+        user4.actor.GetProperty().SetColor((1,0,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
 
 
     renWin.SetSize(900, 900)
