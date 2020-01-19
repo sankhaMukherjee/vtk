@@ -1,7 +1,7 @@
 from logs import logDecorator as lD 
 import jsonref, pprint
 
-from modules.testVTK import examples, testDB2D, testDB3D
+from modules.testVTK import examples, testDB2D, testDB3D, testDB3D_1
 
 config = jsonref.load(open('../config/config.json'))
 logBase = config['logging']['logBase'] + '.modules.testVTK.testVTK'
@@ -23,7 +23,8 @@ def doSomething(logger):
         # examples.cylinderMapper()
         # examples.createSphere()
         # testDB2D.plot2D()
-        testDB3D.plot3D()
+        # testDB3D.plot3D()
+        testDB3D_1.plot3D()
         
         
     except Exception as e:
