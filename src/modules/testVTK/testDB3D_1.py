@@ -301,7 +301,7 @@ def getPatients(nPatients, xPos, yPosDelta):
 
     return allObj
 
-def getDiagnObjs(diagn, xPos, yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=None):
+def getDiagnObjs(diagn, xPos, xText='x', yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=None):
 
     uniques = set([])
     for ds in diagn:
@@ -326,8 +326,6 @@ def getDiagnObjs(diagn, xPos, yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=
                         c[1] = 0
                         c = cl.hsv_to_rgb(c)
                         
-
-
                     obj = sO.Cube()
                     obj.source.SetCenter(xPos -k*size/(nUniq) , i*yPosDelta, -j*zPosDelta)
                     obj.setSize( size/(nUniq + 1)  )
@@ -336,6 +334,53 @@ def getDiagnObjs(diagn, xPos, yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=
                     if (highlight is not None) and (highlight != i):
                         obj.actor.GetProperty().SetOpacity(0.1)
                     allObj.append( obj )
+
+    for i, u in enumerate(uniques):
+
+        xTick = sO.Line((xPos -i*size/(nUniq), -0.4, 0), (xPos -i*size/(nUniq), -0.6, 0))
+        allObj.append(xTick)
+
+        xLabel = sO.Text(f'[{xText}]-{u}')
+        xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+        xLabel.actor.SetPosition( xPos -i*size/(nUniq), -1, 0 )
+        xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+        xLabel.actor.RotateZ(-90)
+        allObj.append( xLabel )
+
+    xLabel = sO.Text(f'{xText}')
+    xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+    xLabel.actor.SetPosition( xPos -0.6, -0.8, 0 )
+    xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+    allObj.append( xLabel )
+
+    ax = sO.Line((xPos, -0.5, 0), (xPos -(nUniq-1)*size/(nUniq), -0.5, 0))
+    allObj.append(ax)
+
+    return allObj
+
+def getDiagnFilterObj(diagn, xPos, toFilter='Alcohol', xText='x', yPosDelta=0.5, zPosDelta=0.5, size=0.3, highlight=None):
+
+    allObj = []
+    for i, patient in enumerate(diagn):
+        for j, day in enumerate(patient):
+            if toFilter in day:
+
+                c = np.array([0,1,0])
+                if (highlight is not None) and (highlight != i):
+                    c = cl.rgb_to_hsv(c)
+                    c[1] = 0
+                    c = cl.hsv_to_rgb(c)
+
+                s = sO.Sphere()
+                s.setColor(c)
+                s.setResolution(40)
+                s.actor.SetPosition( xPos, i*yPosDelta, -j*zPosDelta )
+                s.actor.SetScale(size/2)
+
+                if (highlight is not None) and (highlight != i):
+                    s.actor.GetProperty().SetOpacity(0.1)
+
+                allObj.append( s )
 
     return allObj
 
@@ -367,9 +412,11 @@ def plot3D():
     for obj in get2DObjects(cgiColors, cgiSizes, -1, 'cgi', highlight=4):
         ren.AddActor( obj.actor )
     
-    for obj in getDiagnObjs(diagn, -2, size=1, highlight=4):
+    for obj in getDiagnObjs(diagn, -2, xText='diagn', size=1, highlight=4):
         ren.AddActor( obj.actor )
 
+    for obj in getDiagnFilterObj(diagn, -3.5, xText='cond', highlight=4):
+        ren.AddActor( obj.actor )
 
     # for obj in get1DobjectsSmooth( meanCGI, xPos=-2, xText='meanCGI', vMax = 7, vMin=1, highlight=4 ):
     #     ren.AddActor( obj.actor )
@@ -384,7 +431,7 @@ def plot3D():
     # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
     # ren.AddActor( day4.actor )
 
-    user4 = sO.MeshXZ(-3.3, 0, -0.3, -5, 2, 20)
+    user4 = sO.MeshXZ(-4.3, 0, -0.3, -5, 2, 20)
     ren.AddActor( user4.actor )
 
 
