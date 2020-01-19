@@ -385,14 +385,15 @@ def getDiagnFilterObj(diagn, xPos, toFilter='Alcohol', xText='x', yPosDelta=0.5,
     return allObj
 
 
-def plot3D():
+def plot3D(config):
 
     bgColor = [217/255, 211/255, 232/255]
 
     data = getData()
     site, patient, sex, race, cgi, diagn = zip(*data)
-    meanCGI = [np.mean(m[:10]) for m in cgi]
-    
+    meanCGI_1 = [np.mean(m[2:4]) for m in cgi]
+    meanCGI_2 = [np.mean(m[8:10]) for m in cgi]
+
     sexColors  = colorMapper( sex )
     raceColors = colorMapper( race )
     siteColors = colorMapper( site )
@@ -409,30 +410,48 @@ def plot3D():
     for obj in getPatients(11, 0, 0.5):
         ren.AddActor( obj.actor )
 
-    for obj in get2DObjects(cgiColors, cgiSizes, -1, 'cgi', highlight=4):
-        ren.AddActor( obj.actor )
-    
-    for obj in getDiagnObjs(diagn, -2, xText='diagn', size=1, highlight=4):
-        ren.AddActor( obj.actor )
+    if config['cgi']:
+        for obj in get2DObjects(cgiColors, cgiSizes, -1, 'cgi', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    for obj in getDiagnFilterObj(diagn, -3.5, xText='cond', highlight=4):
-        ren.AddActor( obj.actor )
+    if config['diagn']:
+        for obj in getDiagnObjs(diagn, -2, xText='diagn', size=1, highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    # for obj in get1DobjectsSmooth( meanCGI, xPos=-2, xText='meanCGI', vMax = 7, vMin=1, highlight=4 ):
-    #     ren.AddActor( obj.actor )
+    if config['cond']:
+        for obj in getDiagnFilterObj(diagn, -3.5, xText='cond', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    # for obj in get1Dobjects(raceColors, 3, 'race', highlight=4):
-    #     ren.AddActor( obj.actor )
+    if config['CGI-others']:
+        for obj in get1DobjectsSmooth( meanCGI_1, xPos=-4.5, xText='CGI[before]', vMax = 7, vMin=1, highlight=config['highlight'] ):
+            ren.AddActor( obj.actor )
 
-    # for obj in get1Dobjects(sexColors, 2, 'sex', highlight=4):
-    #     ren.AddActor( obj.actor )
-    
-    
-    # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
-    # ren.AddActor( day4.actor )
+        for obj in get1DobjectsSmooth( meanCGI_2, xPos=-5.5, xText='CGI[after]', vMax = 7, vMin=1, highlight=config['highlight'] ):
+            ren.AddActor( obj.actor )
 
-    user4 = sO.MeshXZ(-4.3, 0, -0.3, -5, 2, 20)
-    ren.AddActor( user4.actor )
+    if config['highlight'] is not None:
+        user4 = sO.MeshXZ(-5.7, 0, -0.3, -5, 2, 20)
+        ren.AddActor( user4.actor )
+
+    if (config['highlight'] is not None) and config['mesh']:
+        #This is the smaller green mesh ...
+        user4 = sO.MeshXZ(-3.5, -1.5, -1, -3.5, 2, 60)
+        user4.actor.GetProperty().SetColor((0,1,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
+
+    if (config['highlight'] is not None) and  config['mesh-red']:
+        #This is the smaller mesh ...
+        user4 = sO.MeshXZ(-3.5, -1.0, -1, -1.5, 2, 60)
+        user4.actor.GetProperty().SetColor((1,0,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
+
+        #This is the other smaller mesh ...
+        user4 = sO.MeshXZ(-3.5, -2.5, -1, -3, 2, 60)
+        user4.actor.GetProperty().SetColor((1,0,0))
+        user4.actor.GetProperty().SetOpacity(0.1)
+        ren.AddActor( user4.actor )
 
 
     renWin.SetSize(900, 900)

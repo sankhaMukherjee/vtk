@@ -301,7 +301,7 @@ def getPatients(nPatients, xPos, yPosDelta):
 
     return allObj
 
-def plot3D():
+def plot3D(config):
 
     bgColor = [217/255, 211/255, 232/255]
 

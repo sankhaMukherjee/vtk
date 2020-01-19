@@ -20,11 +20,23 @@ def doSomething(logger):
     '''
 
     try:
+
+
         # examples.cylinderMapper()
         # examples.createSphere()
-        # testDB2D.plot2D()
-        # testDB3D.plot3D()
-        testDB3D_1.plot3D()
+        # testDB2D.plot2D(config)
+        # testDB3D.plot3D(config)
+
+        config = {
+            'highlight'  : 4,
+            'cgi'        : True,
+            'diagn'      : True,
+            'cond'       : True,
+            'CGI-others' : True,
+            'mesh'       : True,
+            'mesh-red'   : True,
+        }
+        testDB3D_1.plot3D(config)
         
         
     except Exception as e:
