@@ -321,26 +321,31 @@ def plot3D(config):
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    for obj in get1DobjectsSmooth( meanCGI, xPos=0, xText='meanCGI', vMax = 7, vMin=1, highlight=None ):
-        ren.AddActor( obj.actor )
+    if config['meanCGI']:
+        for obj in get1DobjectsSmooth( meanCGI, xPos=0, xText='meanCGI', vMax = 7, vMin=1, highlight=config['highlight'] ):
+            ren.AddActor( obj.actor )
 
-    for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=4):
-        ren.AddActor( obj.actor )
+    if config['cgi']:
+        for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    for obj in get1Dobjects(raceColors, 3, 'race', highlight=4):
-        ren.AddActor( obj.actor )
+    if config['race']:
+        for obj in get1Dobjects(raceColors, 3, 'race', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
 
-    for obj in get1Dobjects(sexColors, 2, 'sex', highlight=4):
-        ren.AddActor( obj.actor )
-    
+    if config['sex']:
+        for obj in get1Dobjects(sexColors, 2, 'sex', highlight=config['highlight']):
+            ren.AddActor( obj.actor )
+        
     for obj in getPatients(11, 4, 0.5):
         ren.AddActor( obj.actor )
 
     # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
     # ren.AddActor( day4.actor )
 
-    user4 = sO.MeshXZ(-0.3, 0, 3.3, -5, 2, 20)
-    ren.AddActor( user4.actor )
+    if config['highlight']:
+        user4 = sO.MeshXZ(-0.3, 0, 3.3, -5, 2, 20)
+        ren.AddActor( user4.actor )
 
 
     renWin.SetSize(900, 900)
