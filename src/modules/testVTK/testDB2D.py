@@ -276,11 +276,12 @@ def plot2D(config):
     raceColors = colorMapper( race )
     siteColors = colorMapper( site )
 
-    for m in listToBin(sex, posDelta=0.4, startPos=4, startStr='sex'):
-        ren.AddActor( m.actor )
+    if config['ohe']:
+        for m in listToBin(sex, posDelta=0.4, startPos=4, startStr='sex'):
+            ren.AddActor( m.actor )
 
-    for m in listToBin(race, posDelta=0.4, startPos=5, startStr='race'):
-        ren.AddActor( m.actor )
+        for m in listToBin(race, posDelta=0.4, startPos=5, startStr='race'):
+            ren.AddActor( m.actor )
     
     # Render the x-axes
     ax1 = sO.Line((1,-0.5,0),(3,-0.5,0))

@@ -24,8 +24,19 @@ def doSomething(logger):
 
         # examples.cylinderMapper()
         # examples.createSphere()
+        config = {
+            'ohe' : True
+        }
         # testDB2D.plot2D(config)
-        # testDB3D.plot3D(config)
+
+        config = {
+            'highlight' : 4,
+            'race'      : True,
+            'sex'       : True,
+            'cgi'       : True,
+            'meanCGI'   : True
+        }
+        testDB3D.plot3D(config)
 
         config = {
             'highlight'  : 4,
@@ -36,7 +47,7 @@ def doSomething(logger):
             'mesh'       : True,
             'mesh-red'   : True,
         }
-        testDB3D_1.plot3D(config)
+        # testDB3D_1.plot3D(config)
         
         
     except Exception as e:
