@@ -56,7 +56,7 @@ def saveCameraSpecs():
     with open(fileName, 'w') as f:
         f.write( json.dumps(data) )
 
-    with open(os.path.join(folder, 'latest.json'), 'w') as f:
+    with open(os.path.join(folder, 'latest3D.json'), 'w') as f:
         f.write( json.dumps(data) )
 
 
@@ -200,6 +200,52 @@ def get1Dobjects(colors, xPos, xText = 'x', yPosDelta=0.5, size=0.3, highlight=N
 
     return allObj
 
+def get1DobjectsSmooth( vals, xPos, xText='x', yPosDelta=0.5, size=0.3, vMax = None, vMin=None, highlight=None ):
+
+    if vMin is None:
+        minVal = min(vals)
+    else:
+        minVal = vMin
+
+    if vMax is None:
+        maxVal = max(vals)
+    else:
+        maxVal = vMax
+
+    size1 = 0.2 + 0.8*(np.array(vals) - minVal)/(maxVal-minVal)
+    colors = plt.cm.Blues(size1)[:,:-1]
+
+    allObj = []
+    for i, color in enumerate(colors):
+
+        if (highlight is not None) and (highlight != i):
+            color = cl.rgb_to_hsv(color)
+            # color[0] = 0
+            color[1] = 0
+            color = cl.hsv_to_rgb(color)
+
+        obj = sO.Cube()
+        obj.source.SetCenter(xPos, i*yPosDelta, 0)
+        obj.setSize(size*size1[i])
+        obj.setColor( color  )
+
+        if (highlight is not None) and (highlight != i):
+            obj.actor.GetProperty().SetOpacity(0.2)
+
+        allObj.append( obj )
+
+    xLabel = sO.Text(f'{xText}')
+    xLabel.actor.SetScale( 0.1, 0.1, 0.1 )
+    xLabel.actor.SetPosition( xPos-0.2, -1, 0 )
+    xLabel.actor.GetProperty().SetColor( 0, 0, 0 )
+
+    allObj.append( xLabel )
+
+    ax1 = sO.Line((xPos,-0.4,0),(xPos,-0.6,0))
+    allObj.append( ax1 )
+
+    return allObj
+
 def get2DObjects(colors2D, sizes2D, xPos, xText='x', yPosDelta=0.5, zPosDelta=0.5, size=0.3, maxNz=10, highlight=None):
 
     allObj = []
@@ -236,12 +282,33 @@ def get2DObjects(colors2D, sizes2D, xPos, xText='x', yPosDelta=0.5, zPosDelta=0.
 
     return allObj
 
+def getPatients(nPatients, xPos, yPosDelta):
+
+    allObj = []
+    for p in range(nPatients):
+        patientText = sO.Text(f'p_{p:03d}')
+        patientText.actor.SetScale( 0.1, 0.1, 0.1 )
+        patientText.actor.SetPosition( xPos, p*yPosDelta, 0 )
+        patientText.actor.GetProperty().SetColor( 0, 0, 0 )    
+
+        allObj.append( patientText )
+
+        ax = sO.Line((xPos-0.3 -0.1, p*yPosDelta, 0), (xPos-0.3 +0.1, p*yPosDelta, 0))
+        allObj.append( ax )
+
+    ax = sO.Line((xPos-0.3, 0, 0), (xPos-0.3, (nPatients-1)*yPosDelta, 0))
+    allObj.append( ax )
+
+    return allObj
+
 def plot3D():
 
     bgColor = [217/255, 211/255, 232/255]
 
     data = getData()
     site, patient, sex, race, cgi = zip(*data)
+    meanCGI = [np.mean(m[:10]) for m in cgi]
+    print(meanCGI)
 
     sexColors  = colorMapper( sex )
     raceColors = colorMapper( race )
@@ -255,24 +322,29 @@ def plot3D():
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    for obj in get1Dobjects(sexColors, 2, 'sex', highlight=4):
-        # obj.actor.GetProperty().SetOpacity(0.5)
+    for obj in get1DobjectsSmooth( meanCGI, xPos=0, xText='meanCGI', vMax = 7, vMin=1, highlight=None ):
+        ren.AddActor( obj.actor )
+
+    for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=4):
         ren.AddActor( obj.actor )
 
     for obj in get1Dobjects(raceColors, 3, 'race', highlight=4):
         ren.AddActor( obj.actor )
 
-    for obj in get2DObjects(cgiColors, cgiSizes, 1, 'cgi', highlight=4):
+    for obj in get1Dobjects(sexColors, 2, 'sex', highlight=4):
         ren.AddActor( obj.actor )
     
+    for obj in getPatients(11, 4, 0.5):
+        ren.AddActor( obj.actor )
+
     # day4 = sO.MeshXY(0,0, 4, 5, -2, 60)
     # ren.AddActor( day4.actor )
 
-    user4 = sO.MeshXZ(0, 0, 4, -5, 2, 60)
+    user4 = sO.MeshXZ(-0.3, 0, 3.3, -5, 2, 20)
     ren.AddActor( user4.actor )
 
 
-    renWin.SetSize(800, 800)
+    renWin.SetSize(900, 900)
     renWin.SetWindowName('3d stuff')
 
     iren.AddObserver("KeyPressEvent", Keypress)
