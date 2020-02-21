@@ -8,7 +8,7 @@
     },{
         "moduleName": "testVTK",
         "path": "modules/testVTK/testVTK.py",
-        "execute": true,
+        "execute": false,
         "description": "a simple example module",
         "owner": ""
     }, {
@@ -23,5 +23,12 @@
         "execute"    : false,
         "description": "",
         "owner"      : ""
+    },
+    {
+        "moduleName": "contours",
+        "path": "modules/contours/contours.py",
+        "execute": true,
+        "description": "",
+        "owner": ""
     }
 ]
