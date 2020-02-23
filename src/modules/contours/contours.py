@@ -2,14 +2,64 @@ from logs import logDecorator as lD
 import jsonref, pprint
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import interpolate 
 
-import pyvista
+import pyvista as pv
 
 from matplotlib.tri import Triangulation
 from skimage import measure
 
 config = jsonref.load(open('../config/config.json'))
 logBase = config['logging']['logBase'] + '.modules.contours.contours'
+
+
+def pyVistaLine():
+
+    days = np.array([7, 25, 56, 62, 80])
+    cgi  = np.array([1, 4, 5,  3, 1])
+    l_x = np.random.rand(5)
+    l_y = np.random.rand(5)
+
+    dInt = np.linspace( days.min(), days.max(), 20 )
+    cInt = interpolate.interp1d( days, cgi, 'cubic' )( dInt )
+    l_xInt = interpolate.interp1d( days, l_x, 'cubic' )( dInt )
+    l_yInt = interpolate.interp1d( days, l_y, 'cubic' )( dInt )
+
+    points = np.column_stack((dInt, l_xInt, l_yInt))
+
+
+    poly = pv.PolyData()
+    poly.points = points
+    the_cell = np.arange(0, len(points), dtype=np.int)
+    the_cell = np.insert(the_cell, 0, len(points))
+    poly.lines = the_cell
+    
+
+    poly["scalars"] = np.ones( np.shape(cInt) )
+    poly["cgi"] = cInt*1e-3
+
+
+
+    planes = []
+    for d in days:
+        p = pv.Plane(center=(d,0,0), direction=(1,0,0), i_size=10, j_size=10)
+        p['scalars'] = np.ones(p.n_points)
+        planes.append( p )
+        
+
+    tube = poly.tube( radius=0.1, scalars='cgi', radius_factor=10 )
+    
+    pv.set_plot_theme('document')
+    plt = pv.Plotter()
+    # plt.background_color = '0xffffff'
+    plt.add_mesh( tube, color = 'orange' )
+
+    for plane in planes:
+        plt.add_mesh( plane,  color='white', opacity=0.1, show_edges=True, edge_color = 'black' )
+    camPos = plt.show()
+    print(camPos)
+
+    return
 
 @lD.log(logBase + '.doSomethingElse')
 def doSomethingElse(logger):
@@ -28,7 +78,6 @@ def doSomethingElse(logger):
 
     return
 
-
 @lD.log(logBase + '.doSomethingElse1')
 def doSomethingElse1(logger):
 
@@ -46,7 +95,7 @@ def doSomethingElse1(logger):
     direction = np.sin(points)**3
 
     # plot using the plotting class
-    plobj = pyvista.Plotter()
+    plobj = pv.Plotter()
     plobj.add_arrows(points, direction, 0.5)
     plobj.show()
 
@@ -125,7 +174,7 @@ def main(logger, resultsDict):
     print('='*30)
 
 
-    doSomethingElse1()
+    pyVistaLine()
 
     print('Getting out of Module 1')
     print('-'*30)
