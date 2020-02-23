@@ -17,6 +17,10 @@ def createGaussian(xVals, yVals, zVals, mu, sigma=1.0, scale=1):
     mu_x, mu_y, mu_z = mu
 
     x, y, z = np.meshgrid(xVals, yVals, zVals)
+    # print(x[:, 0, 0])
+    # print(y[0, :, 0])
+    # print(z[0, 0, :])
+    print(x.shape)
 
     result  = (x - mu_x)**2/(2*sigma**2)
     result += (y - mu_y)**2/(2*sigma**2)
@@ -27,7 +31,20 @@ def createGaussian(xVals, yVals, zVals, mu, sigma=1.0, scale=1):
     return result
 
 
-def pyVistaLine():
+def pyVistaLine(result, day):
+
+
+    grid = pv.UniformGrid()
+    n_x, n_y, n_z = result.shape
+    grid.dimensions = np.array((n_x-1, n_y-1, n_z-1)) + 1
+    grid.origin = (day-3, -6, -6)
+    grid.spacing = (6/100, 12/99, 12/99)
+    grid.point_arrays['diagnosis'] = result.flatten('C')
+
+    contours1 = grid.contour([0.8], 'diagnosis')
+    contours2 = grid.contour([0.5], 'diagnosis')
+    contours3 = grid.contour([0.1], 'diagnosis')
+
 
     days = np.array([7, 25, 56, 62, 80])
     cgi  = np.array([1, 4, 5,  3, 1])
@@ -59,10 +76,16 @@ def pyVistaLine():
 
     tube = poly.tube( radius=0.1, scalars='cgi', radius_factor=10 )
     
+    sphere = pv.Sphere(center=(25, -3, 3))
+
     pv.set_plot_theme('document')
     plt = pv.Plotter()
     # plt.background_color = '0xffffff'
     plt.add_mesh( tube, color = 'orange' )
+    plt.add_mesh( contours1, color=(0.8, 0, 0), opacity=0.2 )
+    plt.add_mesh( contours2, color=(0.5, 0, 0), opacity=0.2 )
+    plt.add_mesh( contours3, color=(0.2, 0, 0), opacity=0.2 )
+    plt.add_mesh( sphere, color='tan' )
 
     for plane in planes:
         plt.add_mesh( plane,  color='white', opacity=0.1, show_edges=True, edge_color = 'black' )
@@ -93,37 +116,25 @@ def main(logger, resultsDict):
     print('Main function of contours')
     print('='*30)
 
-    day = 7
+    day = 25
     xVals = day + np.linspace(-3, 3, 101)
     yVals = np.linspace(-6, 6, 100)
     zVals = np.linspace(-6, 6, 100)
 
     data = [
-        # [(day,  3,  3), 7],
-        # [(day, -3,  3), 6],
-        # [(day, -3,  3), 4],
-        [(day,  0,  0), 4],
-        [(day, -6, -6), 4],
-        [(day,  6,  6), 4],
+        [(day,  3,  3), 1],
+        [(day, -3,  3), 1],
     ]
 
-    results = []
     for i, (mu, scale) in enumerate(data):
         temp = createGaussian(xVals, yVals, zVals, mu, scale=scale)
-        results.append(temp)
         if i == 0:
             result = temp
         else:
             result += temp
 
-
-    for r in results:
-        plt.figure()
-        plt.contourf( r[ 50 ,:,:] )
-        plt.figure()
-        plt.contourf( r[ :,50,:] )
-    plt.show()
-    # pyVistaLine()
+    result = result / result.max()
+    pyVistaLine(result, day)
 
     print('Getting out of Module 1')
     print('-'*30)
