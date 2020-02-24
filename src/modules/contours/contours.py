@@ -15,13 +15,16 @@ logBase = config['logging']['logBase'] + '.modules.contours.contours'
 def createGaussian(xVals, yVals, zVals, mu, sigma=1.0, scale=1):
 
     mu_x, mu_y, mu_z = mu
+    n_x, n_y, n_z = len(xVals), len(yVals), len(zVals)
 
-    x, y, z = np.meshgrid(xVals, yVals, zVals)
-    # print(x[:, 0, 0])
-    # print(y[0, :, 0])
-    # print(z[0, 0, :])
-    print(x.shape)
-
+    x, y, z = np.zeros((n_x, n_y, n_z)), np.zeros((n_x, n_y, n_z)), np.zeros((n_x, n_y, n_z))
+    for i, m in enumerate( xVals ):
+        x[i, :, :] = m
+    for i, m in enumerate( yVals ):
+        y[:, i, :] = m
+    for i, m in enumerate( zVals ):
+        z[:, :, i] = m
+    
     result  = (x - mu_x)**2/(2*sigma**2)
     result += (y - mu_y)**2/(2*sigma**2)
     result += (z - mu_z)**2/(2*sigma**2)
@@ -39,7 +42,7 @@ def pyVistaLine(result, day):
     grid.dimensions = np.array((n_x-1, n_y-1, n_z-1)) + 1
     grid.origin = (day-3, -6, -6)
     grid.spacing = (6/100, 12/99, 12/99)
-    grid.point_arrays['diagnosis'] = result.flatten('C')
+    grid.point_arrays['diagnosis'] = result.flatten('F')
 
     contours1 = grid.contour([0.8], 'diagnosis')
     contours2 = grid.contour([0.5], 'diagnosis')
@@ -48,10 +51,10 @@ def pyVistaLine(result, day):
 
     days = np.array([7, 25, 56, 62, 80])
     cgi  = np.array([1, 4, 5,  3, 1])
-    l_x = np.random.rand(5)
-    l_y = np.random.rand(5)
+    l_x = np.random.rand(5)*5
+    l_y = np.random.rand(5)*5
 
-    dInt = np.linspace( days.min(), days.max(), 20 )
+    dInt = np.linspace( days.min(), days.max(), 100 )
     cInt = interpolate.interp1d( days, cgi, 'cubic' )( dInt )
     l_xInt = interpolate.interp1d( days, l_x, 'cubic' )( dInt )
     l_yInt = interpolate.interp1d( days, l_y, 'cubic' )( dInt )
@@ -122,8 +125,9 @@ def main(logger, resultsDict):
     zVals = np.linspace(-6, 6, 100)
 
     data = [
-        [(day,  3,  3), 1],
-        [(day, -3,  3), 1],
+        [(day,  3,  3), 3],
+        [(day,  1,  2), 4],
+        [(day,  1, -1), 6],
     ]
 
     for i, (mu, scale) in enumerate(data):
